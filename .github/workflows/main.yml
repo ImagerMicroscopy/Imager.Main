@@ -55,9 +55,9 @@ jobs:
            New-Item -ItemType Directory -Force -Path build\PluginConfigurations
            Copy-Item "$installRoot\bin\*" build -Recurse
            Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
-           Compress-Archive -Path  "..\Release" -DestinationPath  "..\Release\Imager-Core-winx64.zip"
-    
-                
+           Compress-Archive -Path  "..\Release" -DestinationPath  "..\Release\Imager-Release-winx64.zip"
+
+  
     # Upload Binaries
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
