@@ -18,6 +18,7 @@ jobs:
       GUI_PATH: gui
       CORE_PATH: core
       TIFFLIB_PATH: tifflib
+      SMART_PATH: smart
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -90,6 +91,16 @@ jobs:
         Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
         Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
 
+    - name: Clone Smart Program Server
+      uses: actions/checkout@v4
+      with: 
+        repository: ImagerMicroscopy/Imager.Smart
+        ssh-key: ${{ secrets.SMART_CLONE }}
+        path: ${{ env.SMART_PATH }}
+    - name: Copy Smart server files
+      run: Copy-Item "$env:SMART_PATH\*" -Destination "Release\SmartProgramPython" -Recurse -Force
+
+      
     - name: Zip release
       run: Compress-Archive -Path  "Release" -DestinationPath  "Release\Imager-Release-winx64.zip"
     # Upload Binaries
