@@ -1,0 +1,39 @@
+name: Publish Imager
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+
+    runs-on: windows-latest  # For a list of available runner types, refer to
+                             # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+
+    env:
+      PROJECT_PATH:   ImagerAvalonia.Desktop
+      GUI_PATH: gui
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: ImagerMicroscopy/Imager.GUI
+        token: ${{ secrets.GUI_CLONE }}
+        path: ${{ env.GUI_PATH }}
+
+
+     # Publish Binaries
+    - name: Publish .NET Project
+      run:  |
+        $guiPath = Join-Path $env:GUI_PATH $env:PROJECT_PATH
+        dotnet publish $guipath -r win-x64 -c Release --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -p:IsTestProject=false -p:EnableCodeCoverage=false -o Release
+      
+    # Upload Binaries
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: Imager-Release-winx64
+        path: Release
