@@ -91,7 +91,7 @@ jobs:
         Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
 
     - name: Zip release
-    - run: Compress-Archive -Path  "Release" -DestinationPath  "Release\Imager-Release-winx64.zip"
+      run: Compress-Archive -Path  "Release" -DestinationPath  "Release\Imager-Release-winx64.zip"
     # Upload Binaries
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
