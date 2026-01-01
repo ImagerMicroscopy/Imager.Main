@@ -17,6 +17,7 @@ jobs:
       PROJECT_PATH:   ImagerAvalonia.Desktop
       GUI_PATH: gui
       CORE_PATH: core
+      TIFFLIB_PATH: tifflib
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -32,30 +33,62 @@ jobs:
         $guiPath = Join-Path $env:GUI_PATH $env:PROJECT_PATH
         dotnet publish $guipath -r win-x64 -c Release --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -p:IsTestProject=false -p:EnableCodeCoverage=false -o Release
   
-    - name: Clone Core
-      uses: actions/checkout@v4
-      with:
-        repository: ImagerMicroscopy/Imager.Core
-        ssh-key: ${{ secrets.CORE_CLONE }}
-        path: ${{ env.CORE_PATH }}
+    # - name: Clone Core
+    #   uses: actions/checkout@v4
+    #   with:
+    #     repository: ImagerMicroscopy/Imager.Core
+    #     ssh-key: ${{ secrets.CORE_CLONE }}
+    #     path: ${{ env.CORE_PATH }}
 
-    - name: Build Core
-      uses: haskell-actions/setup@v2
+
+    # - name: Build Core
+    #   uses: haskell-actions/setup@v2
+    #   with:
+    #     ghc-version: '8.8.4' # Exact version of ghc to use
+    #     enable-stack: true
+    #     stack-version: 'latest'
+    #     cache: true
+    # - run: |
+    #        cd $env:CORE_PATH
+    #        stack build . 
+    #        $installRoot = stack path --local-install-root
+    #        New-Item -ItemType Directory -Force -Path build
+    #        New-Item -ItemType Directory -Force -Path build\Plugins
+    #        New-Item -ItemType Directory -Force -Path build\PluginConfigurations
+    #        Copy-Item "$installRoot\bin\*" build -Recurse
+    #        Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
+    #        Compress-Archive -Path  "..\Release" -DestinationPath  "..\Release\Imager-Release-winx64.zip"
+   
+    - name: Clone TiffLib
+      uses: actions/checkout@v4
+      with: 
+        repository: ImagerMicroscopy/Imager.TiffLib
+        ssh-key: ${{ secrets.TIFFLIB_CLONE }}
+        path: ${{ env.TIFFLIB_PATH }}
+
+        
+    - name: Setup Python
+      uses: actions/setup-python@v2
       with:
-        ghc-version: '8.8.4' # Exact version of ghc to use
-        enable-stack: true
-        stack-version: 'latest'
-        cache: true
-    - run: |
-           cd $env:CORE_PATH
-           stack build . 
-           $installRoot = stack path --local-install-root
-           New-Item -ItemType Directory -Force -Path build
-           New-Item -ItemType Directory -Force -Path build\Plugins
-           New-Item -ItemType Directory -Force -Path build\PluginConfigurations
-           Copy-Item "$installRoot\bin\*" build -Recurse
-           Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
-           Compress-Archive -Path  "..\Release" -DestinationPath  "..\Release\Imager-Release-winx64.zip"
+        python-version: '3.x'
+    - name: Install Python Dependencies
+      run: pip install meson ninja
+    - name: Prepare MSVC
+      uses: bus1/cabuild/action/msdevshell@v1
+      with:
+        architecture: x64
+    - name: Prepare Build
+      working-directory: ${{ env.TIFFLIB_PATH }}
+      run: |
+        meson setup builddir
+
+    - name: Run Build
+      working-directory: ${{ env.TIFFLIB_PATH }}
+      run: |
+        meson compile -C builddir
+        New-Item -ItemType Directory -Force -Path "..\Release"
+        Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
+        Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
 
   
     # Upload Binaries
