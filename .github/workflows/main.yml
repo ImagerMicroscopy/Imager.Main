@@ -19,6 +19,7 @@ jobs:
       CORE_PATH: core
       TIFFLIB_PATH: tifflib
       SMART_PATH: smart
+      PYTHON_VER: "3.14.2"
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -100,12 +101,46 @@ jobs:
     - name: Copy Smart server files
       run: Copy-Item "$env:SMART_PATH\*" -Destination "Release\SmartProgramPython" -Recurse -Force
 
-      
+    - name: Download and Extract Embeddable Python
+      run: |
+        $url = "https://www.python.org/ftp/python/${{ env.PYTHON_VER }}/python-${{ env.PYTHON_VER }}-embed-amd64.zip"
+        Invoke-WebRequest -Uri $url -OutFile python.zip
+        Expand-Archive -Path python.zip -DestinationPath ./temp_python
+  
+    - name: Enable Site-Packages
+      run: |
+        $pthFile = Get-ChildItem -Path ./temp_python -Filter "*._pth" | Select-Object -First 1
+        if ($pthFile) {
+            $content = Get-Content $pthFile.FullName
+            $content = $content -replace "#import site", "import site"
+            Set-Content -Path $pthFile.FullName -Value $content
+        }
+  
+    - name: Install Pip and Requirements
+      shell: powershell
+      run: |
+        $reqPath = Join-Path $env:SMART_PATH "requirements.txt"
+        Invoke-WebRequest -Uri "https://bootstrap.pypa.io/get-pip.py" -OutFile get-pip.py
+        
+        ./temp_python/python.exe get-pip.py --no-warn-script-location
+        
+        if (Test-Path $reqPath) {
+            ./temp_python/python.exe -m pip install -r $reqPath --no-warn-script-location
+        }
+        Remove-Item get-pip.py
+  
+    - name: Copy to Release Folder
+      run: |
+        New-Item -ItemType Directory -Force -Path "Release\python"
+        Copy-Item -Path ".\temp_python\*" -Destination "Release\python" -Recurse -Force
+          
     - name: Zip release
-      run: Compress-Archive -Path  "Release" -DestinationPath  "Release\Imager-Release-winx64.zip"
-    # Upload Binaries
+      # Fix: Don't zip the Release folder into itself (that creates a loop). 
+      # Move the zip one level up or use a different name.
+      run: Compress-Archive -Path "Release\*" -DestinationPath "Imager-Release-winx64.zip"
+  
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
         name: Imager-Release-winx64
-        path: Release\Imager-Release-winx64.zip
+        path: Imager-Release-winx64.zip
