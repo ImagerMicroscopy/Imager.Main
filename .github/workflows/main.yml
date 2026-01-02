@@ -92,14 +92,14 @@ jobs:
     #     Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
     #     Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
 
-    # - name: Clone Smart Program Server
-    #   uses: actions/checkout@v4
-    #   with: 
-    #     repository: ImagerMicroscopy/Imager.Smart
-    #     ssh-key: ${{ secrets.SMART_CLONE }}
-    #     path: ${{ env.SMART_PATH }}
-    # - name: Copy Smart server files
-    #   run: Copy-Item "$env:SMART_PATH\*" -Destination "Release\SmartProgramPython" -Recurse -Force
+    - name: Clone Smart Program Server
+      uses: actions/checkout@v4
+      with: 
+         repository: ImagerMicroscopy/Imager.Smart
+         ssh-key: ${{ secrets.SMART_CLONE }}
+         path: ${{ env.SMART_PATH }}
+    - name: Copy Smart server files
+      run: Copy-Item "$env:SMART_PATH\*" -Destination "Release\SmartProgramPython" -Recurse -Force
 
     - name: Download and Extract Embeddable Python
       run: |
