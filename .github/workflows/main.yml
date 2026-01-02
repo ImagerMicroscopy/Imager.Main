@@ -19,7 +19,7 @@ jobs:
       CORE_PATH: core
       TIFFLIB_PATH: tifflib
       SMART_PATH: smart
-      PYTHON_VER: "3.14.2"
+      PYTHON_VER: "3.13.1"
     steps:
     - name: Checkout
       uses: actions/checkout@v4
@@ -30,35 +30,35 @@ jobs:
 
 
      # Publish Binaries
-    - name: Publish GUI
-      run:  |
-        $guiPath = Join-Path $env:GUI_PATH $env:PROJECT_PATH
-        dotnet publish $guipath -r win-x64 -c Release --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -p:IsTestProject=false -p:EnableCodeCoverage=false -o Release
+    # - name: Publish GUI
+    #   run:  |
+    #     $guiPath = Join-Path $env:GUI_PATH $env:PROJECT_PATH
+    #     dotnet publish $guipath -r win-x64 -c Release --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -p:IsTestProject=false -p:EnableCodeCoverage=false -o Release
   
-    - name: Clone Core
-      uses: actions/checkout@v4
-      with:
-         repository: ImagerMicroscopy/Imager.Core
-         ssh-key: ${{ secrets.CORE_CLONE }}
-         path: ${{ env.CORE_PATH }}
+    # - name: Clone Core
+    #   uses: actions/checkout@v4
+    #   with:
+    #      repository: ImagerMicroscopy/Imager.Core
+    #      ssh-key: ${{ secrets.CORE_CLONE }}
+    #      path: ${{ env.CORE_PATH }}
 
 
-    - name: Build Core
-      uses: haskell-actions/setup@v2
-      with:
-          ghc-version: '8.8.4' # Exact version of ghc to use
-          enable-stack: true
-          stack-version: 'latest'
-    #      cache: true
-    - run: |
-             cd $env:CORE_PATH
-             stack build . 
-             $installRoot = stack path --local-install-root
-             New-Item -ItemType Directory -Force -Path build
-             New-Item -ItemType Directory -Force -Path build\Plugins
-             New-Item -ItemType Directory -Force -Path build\PluginConfigurations
-             Copy-Item "$installRoot\bin\*" build -Recurse
-             Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
+    # - name: Build Core
+    #   uses: haskell-actions/setup@v2
+    #   with:
+    #       ghc-version: '8.8.4' # Exact version of ghc to use
+    #       enable-stack: true
+    #       stack-version: 'latest'
+    # #      cache: true
+    # - run: |
+    #          cd $env:CORE_PATH
+    #          stack build . 
+    #          $installRoot = stack path --local-install-root
+    #          New-Item -ItemType Directory -Force -Path build
+    #          New-Item -ItemType Directory -Force -Path build\Plugins
+    #          New-Item -ItemType Directory -Force -Path build\PluginConfigurations
+    #          Copy-Item "$installRoot\bin\*" build -Recurse
+    #          Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
             
    
     - name: Clone TiffLib
@@ -84,13 +84,13 @@ jobs:
       run: |       
          meson setup builddir
 
-    - name: Run Build
-      working-directory: ${{ env.TIFFLIB_PATH }}
-      run: |
-         meson compile -C builddir
-         New-Item -ItemType Directory -Force -Path "..\Release"
-         Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
-         Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
+    # - name: Run Build
+    #   working-directory: ${{ env.TIFFLIB_PATH }}
+    #   run: |
+    #      meson compile -C builddir
+    #      New-Item -ItemType Directory -Force -Path "..\Release"
+    #      Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
+    #      Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
 
     - name: Clone Smart Program Server
       uses: actions/checkout@v4
@@ -101,7 +101,8 @@ jobs:
          
     - name: Copy Smart server files
       run: |
-          Copy-Item "$env:SMART_PATH\*" -Destination "Release\SmartProgramPython" -Recurse -Force
+        New-Item -ItemType Directory -Force -Path "Release\SmartProgramPython"
+        Copy-Item "$env:SMART_PATH\*" -Destination "Release\SmartProgramPython" -Recurse -Force
 
     - name: Download and Extract Embeddable Python
       run: |
@@ -127,7 +128,7 @@ jobs:
         ./temp_python/python.exe get-pip.py --no-warn-script-location
         ./temp_python/python.exe -m pip install setuptools wheel --no-warn-script-location
         if (Test-Path $reqPath) {
-            ./temp_python/python.exe -m pip install -r $reqPath --no-warn-script-location
+            ./temp_python/python.exe -m pip install -r $reqPath --no-warn-script-location --only-binary=:all:        
         }
         Remove-Item get-pip.py
   
