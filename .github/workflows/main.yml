@@ -21,26 +21,26 @@ jobs:
       SMART_PATH: smart
       PYTHON_VER: "3.14.2"
     steps:
-    # - name: Checkout
-    #   uses: actions/checkout@v4
-    #   with:
-    #     repository: ImagerMicroscopy/Imager.GUI
-    #     ssh-key: ${{ secrets.GUI_CLONE }}
-    #     path: ${{ env.GUI_PATH }}
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        repository: ImagerMicroscopy/Imager.GUI
+        ssh-key: ${{ secrets.GUI_CLONE }}
+        path: ${{ env.GUI_PATH }}
 
 
-    #  # Publish Binaries
-    # - name: Publish GUI
-    #   run:  |
-    #     $guiPath = Join-Path $env:GUI_PATH $env:PROJECT_PATH
-    #     dotnet publish $guipath -r win-x64 -c Release --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -p:IsTestProject=false -p:EnableCodeCoverage=false -o Release
+     # Publish Binaries
+    - name: Publish GUI
+      run:  |
+        $guiPath = Join-Path $env:GUI_PATH $env:PROJECT_PATH
+        dotnet publish $guipath -r win-x64 -c Release --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -p:IsTestProject=false -p:EnableCodeCoverage=false -o Release
   
-    # - name: Clone Core
-    #   uses: actions/checkout@v4
-    #   with:
-    #      repository: ImagerMicroscopy/Imager.Core
-    #      ssh-key: ${{ secrets.CORE_CLONE }}
-    #      path: ${{ env.CORE_PATH }}
+    - name: Clone Core
+      uses: actions/checkout@v4
+      with:
+         repository: ImagerMicroscopy/Imager.Core
+         ssh-key: ${{ secrets.CORE_CLONE }}
+         path: ${{ env.CORE_PATH }}
 
 
     - name: Build Core
@@ -98,6 +98,7 @@ jobs:
          repository: ImagerMicroscopy/Imager.Smart
          ssh-key: ${{ secrets.SMART_CLONE }}
          path: ${{ env.SMART_PATH }}
+         
     - name: Copy Smart server files
       run: |
           Copy-Item "$env:SMART_PATH\*" -Destination "Release\SmartProgramPython" -Recurse -Force
