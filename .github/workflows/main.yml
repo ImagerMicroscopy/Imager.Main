@@ -99,7 +99,9 @@ jobs:
          ssh-key: ${{ secrets.SMART_CLONE }}
          path: ${{ env.SMART_PATH }}
     - name: Copy Smart server files
-      run: Copy-Item "$env:SMART_PATH\*" -Destination "Release\SmartProgramPython" -Recurse -Force
+      run: |
+          New-Item -ItemType Directory -Force -Path "Release"
+          Copy-Item "$env:SMART_PATH\*" -Destination "Release\SmartProgramPython" -Recurse -Force
 
     - name: Download and Extract Embeddable Python
       run: |
