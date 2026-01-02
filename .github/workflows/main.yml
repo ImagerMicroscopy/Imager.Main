@@ -43,54 +43,54 @@ jobs:
     #      path: ${{ env.CORE_PATH }}
 
 
-    # - name: Build Core
-    #   uses: haskell-actions/setup@v2
-    #   with:
-    #      ghc-version: '8.8.4' # Exact version of ghc to use
-    #      enable-stack: true
-    #      stack-version: 'latest'
+    - name: Build Core
+      uses: haskell-actions/setup@v2
+      with:
+          ghc-version: '8.8.4' # Exact version of ghc to use
+          enable-stack: true
+          stack-version: 'latest'
     #      cache: true
-    # - run: |
-    #         cd $env:CORE_PATH
-    #         stack build . 
-    #         $installRoot = stack path --local-install-root
-    #         New-Item -ItemType Directory -Force -Path build
-    #         New-Item -ItemType Directory -Force -Path build\Plugins
-    #         New-Item -ItemType Directory -Force -Path build\PluginConfigurations
-    #         Copy-Item "$installRoot\bin\*" build -Recurse
-    #         Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
+    - run: |
+             cd $env:CORE_PATH
+             stack build . 
+             $installRoot = stack path --local-install-root
+             New-Item -ItemType Directory -Force -Path build
+             New-Item -ItemType Directory -Force -Path build\Plugins
+             New-Item -ItemType Directory -Force -Path build\PluginConfigurations
+             Copy-Item "$installRoot\bin\*" build -Recurse
+             Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
             
    
-    # - name: Clone TiffLib
-    #   uses: actions/checkout@v4
-    #   with: 
-    #     repository: ImagerMicroscopy/Imager.TiffLib
-    #     ssh-key: ${{ secrets.TIFFLIB_CLONE }}
-    #     path: ${{ env.TIFFLIB_PATH }}
+    - name: Clone TiffLib
+      uses: actions/checkout@v4
+      with: 
+         repository: ImagerMicroscopy/Imager.TiffLib
+         ssh-key: ${{ secrets.TIFFLIB_CLONE }}
+         path: ${{ env.TIFFLIB_PATH }}
 
         
-    # - name: Setup Python
-    #   uses: actions/setup-python@v2
-    #   with:
-    #     python-version: '3.x'
-    # - name: Install Python Dependencies
-    #   run: pip install meson ninja
-    # - name: Prepare MSVC
-    #   uses: bus1/cabuild/action/msdevshell@v1
-    #   with:
-    #     architecture: x64
-    # - name: Prepare Build
-    #   working-directory: ${{ env.TIFFLIB_PATH }}
-    #   run: |
-    #     meson setup builddir
+    - name: Setup Python
+      uses: actions/setup-python@v2
+      with:
+         python-version: '3.x'
+    - name: Install Python Dependencies
+      run: pip install meson ninja
+    - name: Prepare MSVC
+      uses: bus1/cabuild/action/msdevshell@v1
+      with:
+         architecture: x64
+    - name: Prepare Build
+      working-directory: ${{ env.TIFFLIB_PATH }}
+      run: |       
+         meson setup builddir
 
-    # - name: Run Build
-    #   working-directory: ${{ env.TIFFLIB_PATH }}
-    #   run: |
-    #     meson compile -C builddir
-    #     New-Item -ItemType Directory -Force -Path "..\Release"
-    #     Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
-    #     Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
+    - name: Run Build
+      working-directory: ${{ env.TIFFLIB_PATH }}
+      run: |
+         meson compile -C builddir
+         New-Item -ItemType Directory -Force -Path "..\Release"
+         Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
+         Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
 
     - name: Clone Smart Program Server
       uses: actions/checkout@v4
@@ -100,7 +100,6 @@ jobs:
          path: ${{ env.SMART_PATH }}
     - name: Copy Smart server files
       run: |
-          New-Item -ItemType Directory -Force -Path "Release"
           Copy-Item "$env:SMART_PATH\*" -Destination "Release\SmartProgramPython" -Recurse -Force
 
     - name: Download and Extract Embeddable Python
