@@ -167,3 +167,26 @@ jobs:
       with:
         name: Imager-Release-winx64
         path: Imager-Release-winx64.zip
+
+  publish-release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') 
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: Imager-Release-winx64
+          path: ./downloaded-artifacts
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Imager ${{ github.ref_name }}
+          tag_name: ${{ github.ref }}
+          files: ./downloaded-artifacts/Imager-Release-winx64.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: false 
