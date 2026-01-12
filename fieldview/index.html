@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Viewing large areas - Imager</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Viewing large areas";
+        var mkdocs_page_input_path = "fieldview.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Imager
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../hardwareconfig/">Hardware configuration and installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../guiguide/">GUI overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../experimentsetup/">Setting up your experiment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../smartimaging/">Setting up smart imaging pipelines</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../smartprogramapi/">Smart program API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../analysistools/">Live plotting and analysis tools</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Viewing large areas</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#setting-up-the-field-viewer">Setting up the Field Viewer</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#input-fields">Input Fields</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#field-viewer-settings">Field Viewer Settings</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../multicolordisplay/">Multi Channel view</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Imager</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Viewing large areas</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="using-the-field-viewer-for-visualizing-large-areas">Using the Field Viewer for Visualizing Large Areas</h1>
+<p>In addition to standard image processing tools, Imager provides support for basic tile scan visualization through the <strong>Field Viewer</strong> utility.  </p>
+<p>When entering the Field Viewer, this is the default window you will see:</p>
+<p><img alt="Field Viewer" src="../images/fieldview.png" /></p>
+<p>You can now configure the Field Viewer for your acquisition.</p>
+<hr />
+<h2 id="setting-up-the-field-viewer">Setting up the Field Viewer</h2>
+<p>The Field Viewer can be used in <strong>live</strong> or <strong>experiment</strong> mode. To use it correctly, you need to know the <strong>virtual pixel size</strong> (in nanometers) of your final image.</p>
+<div style=\"background-color: #ffe5e5; border-left: 5px solid #ff4d4d; border-radius: 10px; padding: 15px; margin: 10px 0;\">
+<strong>⚠️ Important:</strong>  
+If the pixel size or camera orientation is incorrect, the tiling will not display correctly.
+</div>
+
+<p>The virtual pixel size can be calculated as:</p>
+<p>Pixel size (nm) = Physical camera pixel size / Total system magnification</p>
+<h3 id="input-fields">Input Fields</h3>
+<p>Once the pixel size is configured, you need to set the following:</p>
+<ul>
+<li><strong>Acquisition</strong> – The name of the acquisition setting from which the data will be displayed  </li>
+<li><strong>Detector</strong> – The name of the detector within that acquisition setting</li>
+</ul>
+<p><strong>Example:</strong>  </p>
+<p>We are imaging live using the acquisition setting <strong>Channel1</strong>:</p>
+<p><img src="Channel1.png" alt="Acquisition example" width="350"/></p>
+<p>For <strong>Channel1</strong>, two detectors are enabled: <strong>DummyCam1</strong> and <strong>DummyCam2</strong>.<br />
+In the Field Viewer, the options for acquisitions and detectors will appear as:</p>
+<p><img src="availablechannelsanddetectors.png" alt="Available channels and detectors" width="350"/></p>
+<p>Select the desired <strong>Acquisition</strong> and <strong>Detector</strong> from the dropdown menu, then press <strong>Engage</strong> to enable the update loop.</p>
+<div style="background-color: #f3e8ff; border-left: 5px solid #b366ff; border-radius: 10px; padding: 15px; margin: 10px 0;\">
+<strong>📝 Note:</strong>  
+- Each acquisition/detector pair has its own Field Viewer. Changing the selection from the dropdown switches the currently visible Field Viewer.  
+- Even if a Field Viewer is not currently selected, it will continue updating in the background.
+</div>
+
+<hr />
+<h2 id="field-viewer-settings">Field Viewer Settings</h2>
+<p>Contrast for each Field Viewer can be adjusted independently by modifying the <strong>minimum</strong> and <strong>maximum</strong> displayed values in the top-right corner.  </p>
+<p>Additional actions:</p>
+<ul>
+<li><strong>Clear view</strong> – Clears all displayed images for all acquisition/detector pairs  </li>
+<li><strong>Reset view</strong> – Resets the viewport to default transformations  </li>
+<li><strong>Go to current</strong> – Centers the viewport on the current stage position</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../analysistools/" class="btn btn-neutral float-left" title="Live plotting and analysis tools"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../multicolordisplay/" class="btn btn-neutral float-right" title="Multi Channel view">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../analysistools/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../multicolordisplay/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

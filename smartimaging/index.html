@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Setting up smart imaging pipelines - Imager</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Setting up smart imaging pipelines";
+        var mkdocs_page_input_path = "smartimaging.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Imager
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../hardwareconfig/">Hardware configuration and installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../guiguide/">GUI overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../experimentsetup/">Setting up your experiment</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Setting up smart imaging pipelines</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#setting-up-python">Setting Up Python</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#using-the-embedded-python-distribution">Using the Embedded Python Distribution</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#use-your-own-virtual-environment">Use Your Own Virtual Environment</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#smart-imaging-concept">Smart Imaging Concept</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#the-experimental-challenge">The Experimental Challenge</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#implementation-architecture">Implementation Architecture</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#loading-your-first-smart-program">Loading your first smart program</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#smart-program-template">Smart Program Template</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#linking-your-smart-program-to-the-experiment">Linking Your Smart Program to the Experiment</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#practical-example-conditional-acquisition">Practical Example: Conditional Acquisition</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-to-link-detection-elements">How to Link Detection Elements</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#linking-the-smart-program-output">Linking the Smart Program Output</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#smart-program-decisions">Smart Program Decisions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#linking-smart-program-decisions-to-loop-elements">Linking Smart Program Decisions to Loop Elements</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#supported-decision-types">Supported Decision Types</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#update-acquisition-parameter">Update Acquisition Parameter</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#exposing-an-update-function-in-python">Exposing an Update Function in Python</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#coupling-the-function-to-an-updateacquisition-element">Coupling the Function to an UpdateAcquisition Element</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#selecting-the-acquisition-setting">Selecting the Acquisition Setting</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#parameter-mapping-in-the-smart-program">Parameter Mapping in the Smart Program</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#updating-parameters-in-python">Updating Parameters in Python</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../smartprogramapi/">Smart program API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../analysistools/">Live plotting and analysis tools</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../fieldview/">Viewing large areas</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../multicolordisplay/">Multi Channel view</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Imager</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Setting up smart imaging pipelines</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="smart-imaging">Smart Imaging</h1>
+<p>Imager is engineered with smart imaging at its core. To facilitate live data processing and real-time feedback, we utilize specialized Python modules termed <strong>"Smart Programs."</strong></p>
+<p>A Smart Program provides a declarative framework for defining how the smart imaging backend interacts with the Haskell orchestration layer. Before implementing these pipelines, the Python environment must be configured.</p>
+<h2 id="setting-up-python">Setting Up Python</h2>
+<p>There are two primary methods for configuring Python to work with smart imaging pipelines.</p>
+<h3 id="using-the-embedded-python-distribution">Using the Embedded Python Distribution</h3>
+<p>For a streamlined setup, Imager includes an embedded <strong>Python 3.13</strong> distribution. This is ideal if you prefer not to manage a standalone Python installation on your system or wish to avoid environment compatibility issues.</p>
+<p>The Python interpreter is located at:
+<code>python\python.exe</code></p>
+<p>You can customize the embedded distribution by installing any required packages. To modify the environment:</p>
+<ol>
+<li>Navigate to the directory where <code>Imager.exe</code> is located.</li>
+<li>Open <strong>PowerShell</strong> or a <strong>Command Prompt</strong>.</li>
+<li>Execute the following command (using <code>seaborn</code> as an example):</li>
+</ol>
+<pre><code class="language-powershell">python\python.exe -m pip install seaborn
+</code></pre>
+<p>This will install the package directly into the shipped Python distribution, making it available for your smart imaging pipelines.</p>
+<h3 id="use-your-own-virtual-environment">Use Your Own Virtual Environment</h3>
+<p>If you prefer to use a custom virtual environment, you must first install the necessary dependencies to ensure compatibility with the smart imaging server.</p>
+<ol>
+<li><strong>Create a virtual environment:</strong> Navigate to the directory where <code>Imager.exe</code> is located and run:</li>
+</ol>
+<pre><code>python -m venv imager-venv
+</code></pre>
+<ol>
+<li><strong>Activate the environment:</strong> In PowerShell, activate your new environment using:</li>
+</ol>
+<pre><code>imager-venv\Scripts\activate
+</code></pre>
+<ol>
+<li><strong>Install dependencies:</strong> The required packages for the smart imaging server are located in the <code>SmartProgramPython</code> folder. Install them by running:</li>
+</ol>
+<pre><code>python -m pip install -r SmartProgramServer\requirements.txt
+</code></pre>
+<ol>
+<li><strong>Configure the Python Path:</strong> Once the installation is complete, you must point Imager to your custom interpreter. Open <code>Config.json</code> and update the <code>pythonpath</code> field:</li>
+</ol>
+<pre><code class="language-json">{
+    &quot;pythonpath&quot;: &quot;C:/PATH_TO_YOUR_VIRTUAL_ENV/Scripts/python.exe&quot;
+}
+</code></pre>
+<div style="background-color: #f3e8ff; border-left: 5px solid #b366ff; border-radius: 10px; padding: 15px; margin: 10px 0;">
+<strong>📝 Note:</strong>  
+Ensure you use the correct slash orientation (forward slashes `/` are generally safer in JSON configurations) and verify that the path points specifically to the `python.exe` executable within your environment's `Scripts` folder.
+</div>
+
+<p>With Python successfully configured, you are ready to begin implementing smart imaging pipelines.</p>
+<h2 id="smart-imaging-concept">Smart Imaging Concept</h2>
+<p>To implement effective smart imaging pipelines, it is essential to understand the architecture of the feedback loop. </p>
+<h3 id="the-experimental-challenge">The Experimental Challenge</h3>
+<p>Consider the following workflow requirements:</p>
+<ol>
+<li>A 30 mm dish contains a high density of cells.</li>
+<li>Only a small fraction of these cells express a specific protein of interest.</li>
+<li>The goal is to monitor only the expressing cells over an extended time-lapse.</li>
+</ol>
+<p><strong>The Manual Approach (Inefficient):</strong> You would perform a "Relative Stage Loop" to scan the dish, manually identify and save the coordinates of expressing cells, and then initiate a new "Time Lapse" experiment using that static list of positions.</p>
+<p><strong>The Smart Imaging Approach (Automated):</strong></p>
+<ol>
+<li><strong>Scan:</strong> Execute a Relative Stage Loop.</li>
+<li><strong>Analyze:</strong> For every field of view (FOV) detected, apply real-time image processing to identify cells of interest.</li>
+<li><strong>Act:</strong> Automatically pass the coordinates of identified cells into a subsequent Stage Loop.</li>
+</ol>
+<p>To execute these real-time decisions, Imager utilizes <strong>Python</strong> as an external, configurable agent.</p>
+<h3 id="implementation-architecture">Implementation Architecture</h3>
+<p>The integration between Imager and Python follows a specific logic:</p>
+<ul>
+<li><strong>Inputs:</strong> Every <strong>Detection</strong> element in your experiment tree can be linked to a function within your Python Smart Program.</li>
+<li><strong>Outputs:</strong> Every <strong>Loop</strong> element in the experiment tree can be linked to the output of a Python Smart Program.</li>
+<li><strong>Configuration:</strong> Users define exactly which <strong>Acquisition/Detector</strong> pairs are streamed to specific parts of the Python code.</li>
+<li><strong>Execution:</strong> During a measurement, images are streamed to Python as they are acquired. The Smart Program initializes upon receiving the first image.</li>
+<li><strong>Decisions:</strong> When the experiment reaches a linked Loop, the Smart Program provides a <strong>Decision</strong>. This decision dynamically populates the loop parameters (e.g., specific stage positions or iteration counts).</li>
+</ul>
+<p>This interaction allows the experiment to "self-correct" or "self-guide" based on the data it sees in real time.</p>
+<h2 id="loading-your-first-smart-program">Loading your first smart program</h2>
+<p>From the Python perspective, a Smart Program is a class that inherits from <code>SmartImagerProgram</code> and <code>SmartImagerBase</code>. </p>
+<h3 id="smart-program-template">Smart Program Template</h3>
+<p>Below is an example of a program template. This file is located at <code>/SmartProgramPython/user_programs/DemoProgram.py</code> within the main Imager directory.</p>
+<pre><code class="language-python">
+### All necessary imports. Do not change this. You can add your imports here as well
+from core.smartprogram import *
+from core.baseprogram import *
+from models.decisions import *
+from models.messagepackdata import ImagerData
+from models.parameter_model import *
+from models.smartprogramdefinition import EquipmentParameter
+#############################################
+
+
+class DemoProgram(SmartImagerBase,metaclass=SmartImagerProgram):
+    def __init__(self):
+        &quot;&quot;&quot;Instantiates a program. Here you can define parameters that are visible in the GUI&quot;&quot;&quot;
+        self.scalar_parameter = Scalar(value = 0.5, annotation = &quot;Scalar parameter&quot;)
+        self.boolean_parameter = Boolean(value = True, annotation =  &quot;Boolean parameter&quot;)
+        self.integer_parameter = Integer(value =10,  annotation = &quot;Integer parameter&quot;)
+        self.text_parameter = Text(value =&quot;Hello from Smart Python&quot;,  annotation =  &quot;Text Parameter&quot;)
+
+    @onimagesreceived
+    def images_received(self, image: ImagerData):
+        &quot;&quot;&quot;Tagged function that receives data. Will be visible in the GUI&quot;&quot;&quot;
+        pass
+
+
+    @onimagesreceived
+    def more_images_received(self, first_image: ImagerData, second_image: ImagerData):
+        &quot;&quot;&quot;You can have multiple functions that can receive data, with multiple images.
+        Each can have multiple images as input &quot;&quot;&quot;
+        pass
+
+    @onacquisitionupdate
+    def acq_update(self, acq : EquipmentParameter):
+        &quot;&quot;&quot;You can update any acquisition parameter by tagging a function with @onacquisitionupdate.
+        It expects a single argument, mainly the parameter that requires updating&quot;&quot;&quot;
+        pass
+
+    def dotimes_decision_requested(self):
+        &quot;&quot;&quot;Returns a Do Times decision.&quot;&quot;&quot;
+        return super().dotimes_decision_requested()
+
+    def relative_stageloop_decision_requested(self):
+        &quot;&quot;&quot;Returns a relative stageloop decision.&quot;&quot;&quot;
+        return super().relative_stageloop_decision_requested()
+
+    def stageloop_decision_requested(self):
+        &quot;&quot;&quot;Returns a stage loop decision.&quot;&quot;&quot;
+        return super().stageloop_decision_requested()
+
+    def timelapse_decision_requested(self):
+        &quot;&quot;&quot;Returns a time lapse decision.&quot;&quot;&quot;
+        return super().timelapse_decision_requested()
+
+</code></pre>
+<h2 id="linking-your-smart-program-to-the-experiment">Linking Your Smart Program to the Experiment</h2>
+<p>Once a program is successfully loaded, all functions decorated with <code>@onimagesreceived</code> are automatically exposed in the graphical user interface. These functions serve as the entry points for data, allowing you to link them directly to <strong>Detection</strong> elements within your experiment tree.</p>
+<p>Using the <code>DemoProgram</code> as an example, the exposed methods appear as follows:</p>
+<p><img src="programmethods.png" alt="Exposed Program Methods" width="350px" style="border-radius: 8px;"></p>
+<h3 id="practical-example-conditional-acquisition">Practical Example: Conditional Acquisition</h3>
+<p>Consider an experiment with the following logic:</p>
+<ol>
+<li>Capture a <strong>Transmission</strong> image.</li>
+<li>Pass this image to the Smart Program to decide whether to continue.</li>
+<li>If approved, acquire a <strong>Time Series</strong> of two-channel data, streaming both channels to the program simultaneously for real-time analysis.</li>
+</ol>
+<p>The resulting experiment tree would look like this:</p>
+<p><img src="experimenttreesmart.png" alt="Smart Experiment Tree" width="350px" style="border-radius: 8px;"></p>
+<h3 id="how-to-link-detection-elements">How to Link Detection Elements</h3>
+<ol>
+<li>In the <strong>Smart Program</strong> tab, locate the <code>images_received</code> function.</li>
+<li>
+<p>Click the <strong>"+"</strong> icon next to the <code>Selected Detection</code> field. This opens a dedicated selection window displaying your experiment tree:
+<img src="experimenttreeselection.png" alt="Experiment Tree Selection" width="450px" style="border-radius: 8px;"></p>
+</li>
+<li>
+<p><strong>Double-tap</strong> the specific detection element you want to link (e.g., <code>Detection(Transmission)</code>).</p>
+</li>
+<li>
+<p>A <strong>colored square</strong> will appear both in the experiment tree and next to the function parameter in the Smart Program tab, confirming the link:
+<img src="doubletappeddetection.png" alt="Linked Detection Confirmation" width="450px" style="border-radius: 8px;"></p>
+</li>
+<li>
+<p><strong>Configure Data Source:</strong> Use the dropdown menus to select the specific <strong>Acquisition Setting</strong> and <strong>Camera</strong> pair you wish to stream. The dropdown will only display acquisitions that are currently enabled for that Detection element.</p>
+</li>
+</ol>
+<p>You can repeat this procedure for functions requiring multiple inputs, such as <code>more_images_received</code>, to pipe multiple data streams into a single Python logic block.</p>
+<p>The final configuration showing the linked experiment tree and program logic should look like this:</p>
+<p><img src="smartprogramlinked.png" alt="Final Linked Smart Program" width="450px" style="border-radius: 8px;"></p>
+<hr />
+<p>Within your Python code, images are received as <code>ImagerData</code> objects. For instructions on how to manipulate this data and how to link <code>@onupdateacquisition</code> decorators, please see the <a href="../smartprogramapi/">Smart Program API</a> and the <a href="#update-acquisition-parameter">Updating Acquisition</a> sections.</p>
+<h2 id="linking-the-smart-program-output">Linking the Smart Program Output</h2>
+<p>Now that we’ve covered how to pipe data <em>into</em> a smart program, let’s look at how to <strong>use the output</strong> of that program inside your imager experiment.</p>
+<hr />
+<h3 id="smart-program-decisions">Smart Program Decisions</h3>
+<p>A smart program can emit <strong>four types of decisions</strong>, each corresponding to a different loop behavior:</p>
+<pre><code class="language-python">def dotimes_decision_requested(self):
+    &quot;&quot;&quot;Returns a DoTimes decision.&quot;&quot;&quot;
+    return super().dotimes_decision_requested()
+
+def relative_stageloop_decision_requested(self):
+    &quot;&quot;&quot;Returns a RelativeStageLoop decision.&quot;&quot;&quot;
+    return super().relative_stageloop_decision_requested()
+
+def stageloop_decision_requested(self):
+    &quot;&quot;&quot;Returns a StageLoop decision.&quot;&quot;&quot;
+    return super().stageloop_decision_requested()
+
+def timelapse_decision_requested(self):
+    &quot;&quot;&quot;Returns a TimeLapse decision.&quot;&quot;&quot;
+    return super().timelapse_decision_requested()
+
+</code></pre>
+<h3 id="linking-smart-program-decisions-to-loop-elements">Linking Smart Program Decisions to Loop Elements</h3>
+<p>Each decision produced by a smart program can be used to populate the parameters of any loop element within the imager program.</p>
+<p>For loop elements in the experiment tree, open the element’s <strong>settings</strong> and locate the <strong>Parameters from Program</strong> option:</p>
+<p><img src="parametersfromprogram.png" alt="Parameters from Program" width="250px" style="border-radius: 8px;"></p>
+<p>Enable this option, then select the desired smart program from the dropdown menu.</p>
+<div style="background-color: #ffe5e5; border-left: 5px solid #ff4d4d; border-radius: 10px; padding: 15px; margin: 10px 0;">
+<strong>⚠️ Important:</strong> Ensure that the **Program ID** matches the ID of the smart program you intend to use.  
+If the IDs do not match, the loop element will not receive the decision output.
+</div>
+
+<p>Once configured, the experiment element is successfully linked to the smart program output.</p>
+<hr />
+<h3 id="supported-decision-types">Supported Decision Types</h3>
+<p>Each decision function must return one of the following objects:</p>
+<ul>
+<li><code>DoTimes</code></li>
+<li><code>RelativeStageLoop</code></li>
+<li><code>StageLoop</code></li>
+<li><code>TimeLapse</code></li>
+</ul>
+<p>For details on constructing and returning these decision objects, see the<br />
+<strong><a href="../smartprogramapi/">Smart Program API</a></strong> documentation.</p>
+<h2 id="update-acquisition-parameter">Update Acquisition Parameter</h2>
+<p>The <strong>Update Acquisition</strong> mechanism is a specialized element that allows you to update a selected acquisition setting directly from your Smart Program.</p>
+<hr />
+<h3 id="exposing-an-update-function-in-python">Exposing an Update Function in Python</h3>
+<p>To expose a Python function that updates an acquisition setting, decorate it with:</p>
+<pre><code class="language-python">@onupdateacquisition
+</code></pre>
+<p>By default, <strong>all arguments of this function are of type <code>EquipmentParameter</code></strong>.</p>
+<p>Similar to the <code>@onimagesreceived</code> decorator, any function decorated with <code>@onupdateacquisition</code> is automatically exposed in the GUI.</p>
+<p><img src="onupdateacq.png" alt="alt image" width="300px" border-radius: 8px;></p>
+<hr />
+<h3 id="coupling-the-function-to-an-updateacquisition-element">Coupling the Function to an UpdateAcquisition Element</h3>
+<p>Each exposed update acquisition function can be linked to an <strong>UpdateAcquisition</strong> element in the experiment tree by following these steps:</p>
+<ol>
+<li>Click the <strong><code>+</code></strong> button next to the exposed function.</li>
+<li>Select the <strong>UpdateAcquisition</strong> element from the experiment tree (double-tap).</li>
+</ol>
+<p><img src="selectupdate.png" alt="alt image" width="300px" border-radius: 8px;></p>
+<p>Once coupled, a colored rectangle appears next to the linked element, indicating a successful connection.</p>
+<p><img src="coloredrectangle.png" alt="alt image" width="300px" border-radius: 8px;></p>
+<hr />
+<h3 id="selecting-the-acquisition-setting">Selecting the Acquisition Setting</h3>
+<p>An <strong>UpdateAcquisition</strong> element can be linked to <strong>one acquisition setting only</strong>.</p>
+<p>You can choose which acquisition setting to update from the element’s settings menu:</p>
+<p><img src="updateacqelement.png" alt="alt image" width="300px" border-radius: 8px;></p>
+<hr />
+<h3 id="parameter-mapping-in-the-smart-program">Parameter Mapping in the Smart Program</h3>
+<p>The <strong>UpdateAcquisition</strong> element is responsible for parsing the selected acquisition setting and passing it into the Python function decorated with <code>@onupdateacquisition</code>.</p>
+<p>Which parameter is passed to the function can be configured from the GUI:</p>
+<ul>
+<li>Open the <strong>Smart Program</strong> tab.</li>
+<li>Locate the exposed function.</li>
+<li>Use the dropdown menu next to it to select a parameter path.</li>
+</ul>
+<p>The dropdown contains:</p>
+<ul>
+<li>Paths to the light source</li>
+<li>Movable parameters available in the system</li>
+</ul>
+<p><img src="dropdownupdateacq.png" alt="alt image" width="300px" border-radius: 8px;></p>
+<p>Once selected, the <code>EquipmentParameter</code> argument in your function will refer <strong>only to the parameter chosen from the dropdown</strong>.</p>
+<hr />
+<h2 id="updating-parameters-in-python">Updating Parameters in Python</h2>
+<p>To learn how to modify acquisition parameters within your Python Smart Program, refer to the
+<a href="../smartprogramapi/">Smart Program API</a>.</p>
+<hr />
+<p>That’s it — your update acquisition workflow is now fully configured and ready to use.</p>
+<!-- End of HTML block -->
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../experimentsetup/" class="btn btn-neutral float-left" title="Setting up your experiment"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../smartprogramapi/" class="btn btn-neutral float-right" title="Smart program API">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../experimentsetup/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../smartprogramapi/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

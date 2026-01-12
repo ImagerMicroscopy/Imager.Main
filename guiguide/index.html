@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>GUI overview - Imager</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "GUI overview";
+        var mkdocs_page_input_path = "guiguide.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Imager
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../hardwareconfig/">Hardware configuration and installation</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">GUI overview</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#panels-overview">Panels Overview</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#acquisitions-tab">Acquisitions Tab</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-user-defined-acquisitions">1. User-Defined Acquisitions</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-available-light-sources">2. Available Light Sources</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-movable-components">3. Movable Components</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-toggle-detectors">4. Toggle Detectors</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-detector-properties">5. Detector Properties</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#status-tab">Status Tab</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#image-view-tab">Image View Tab</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-contrast-settings">1. Contrast Settings</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-image-elements">2. Image Elements</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-multi-channel-view">3. Multi-Channel View</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#4-selected-position">4. Selected Position</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#5-scroll-bar">5. Scroll Bar</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#6-reset-view">6. Reset View</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#7-toolbar">7. Toolbar</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#experiment-editor">Experiment Editor</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#1-experiment-list">1. Experiment List</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#2-experiment-editor">2. Experiment Editor</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#3-selected-element-settings">3. Selected Element Settings</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../experimentsetup/">Setting up your experiment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../smartimaging/">Setting up smart imaging pipelines</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../smartprogramapi/">Smart program API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../analysistools/">Live plotting and analysis tools</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../fieldview/">Viewing large areas</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../multicolordisplay/">Multi Channel view</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Imager</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">GUI overview</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="gui-overview">GUI Overview</h1>
+<p>This section provides an overview of the graphical user interface (GUI) and its main panels.</p>
+<hr />
+<h2 id="panels-overview">Panels Overview</h2>
+<p>The GUI consists of six main panels:</p>
+<p><img alt="GUI panel overview" src="../images/guitaboverview.png" /></p>
+<ol>
+<li><strong>Acquisitions tab</strong> – Configure hardware and acquisition settings. View user-defined acquisitions and individual hardware components.  </li>
+<li><strong>Status tab</strong> – Monitor the progress of measurements and the currently executing element.  </li>
+<li><strong>Image view tab</strong> – Main viewport for displaying acquired data. You can also switch to the Field View or Smart Program Editor.  </li>
+<li><strong>Acquisition control tab</strong> – Start live acquisition or run the currently selected experiment.  </li>
+<li><strong>Experiment tab</strong> – Create and manage experimental workflows.  </li>
+<li><strong>Stage control</strong> – Control the stage manually.</li>
+</ol>
+<p>The following sections provide an in-depth guide for each panel.</p>
+<hr />
+<h2 id="acquisitions-tab">Acquisitions Tab</h2>
+<p>The <strong>Acquisitions tab</strong> is used to define settings for all hardware components.</p>
+<p><img alt="Acquisitions tab" src="../images/acqtab.png" /></p>
+<h3 id="1-user-defined-acquisitions">1. User-Defined Acquisitions</h3>
+<p>Here you can define new acquisition settings. Press <strong>Copy</strong> to create a new setting based on an existing one.</p>
+<div style="background-color: #f3e8ff; border-left: 5px solid #b366ff; border-radius: 10px; padding: 15px; margin: 10px 0;">
+<strong>📝 Note:</strong> Copying an acquisition setting duplicates all parameters from the source setting.
+</div>
+
+<ul>
+<li>Press <strong>Remove</strong> to delete an acquisition.  </li>
+<li>Each acquisition must have a unique, non-empty name. Special characters are not allowed.  </li>
+<li>The experiment will not start if duplicate names exist.</li>
+</ul>
+<hr />
+<h3 id="2-available-light-sources">2. Available Light Sources</h3>
+<p>Displays all light sources grouped by equipment.  </p>
+<p><strong>Enabling a light source:</strong> Check the box next to the light source name.<br />
+<strong>Adjusting power:</strong> Use the percentage slider (1–100%). If the slider is disabled, the setting is ignored.</p>
+<hr />
+<h3 id="3-movable-components">3. Movable Components</h3>
+<p>Components can be <strong>discrete</strong> (e.g., filter wheel) or <strong>continuous</strong> (e.g., stepper motor).<br />
+Hover over numeric inputs to see the allowed range for continuous components.</p>
+<div style="background-color: #ffe5e5; border-left: 5px solid #ff4d4d; border-radius: 10px; padding: 15px; margin: 10px 0;">
+<strong>⚠️ Important:</strong> Values exceeding the allowed range are clamped to the minimum or maximum.
+</div>
+
+<p>Each movable component must have a setting selected.</p>
+<hr />
+<h3 id="4-toggle-detectors">4. Toggle Detectors</h3>
+<p>Imager supports multiple cameras (limited by data throughput).<br />
+You can toggle each camera on or off during acquisition.</p>
+<hr />
+<h3 id="5-detector-properties">5. Detector Properties</h3>
+<p>Adjust properties such as exposure time or cropping for each detector.</p>
+<div style="background-color: #ffe5e5; border-left: 5px solid #ff4d4d; border-radius: 10px; padding: 15px; margin: 10px 0;">
+<strong>⚠️ Important:</strong> Detector settings are validated by applying and reading them back to avoid inconsistencies. Certain crop settings may not support requested exposure times.
+</div>
+
+<hr />
+<h2 id="status-tab">Status Tab</h2>
+<p>Displays the status of the current measurement and the active element.</p>
+<hr />
+<h2 id="image-view-tab">Image View Tab</h2>
+<p>The <strong>Image View</strong> panel displays data during live acquisition or experiment runs.</p>
+<p><img alt="Image view" src="../images/imageview.png" /></p>
+<h3 id="1-contrast-settings">1. Contrast Settings</h3>
+<p>Adjust contrast via the slider or input box. Enable or disable <strong>auto-contrast</strong> as needed.</p>
+<div style="background-color: #f3e8ff; border-left: 5px solid #b366ff; border-radius: 10px; padding: 15px; margin: 10px 0;">
+<strong>📝 Note:</strong> In <strong>multi-channel view<strong>, each channel has a double-slider for contrast. No histogram is displayed.
+<br><br>
+
+<img src="multichannelcontrast.png" alt="Multi-channel contrast" style="max-width: 50%; border-radius: 8px;">
+</div>
+
+<hr />
+<h3 id="2-image-elements">2. Image Elements</h3>
+<p>Shows all overlay elements on the image.<br />
+See <a href="../analysistools/">Live plotting and analysis tools</a> for usage details.</p>
+<hr />
+<h3 id="3-multi-channel-view">3. Multi-Channel View</h3>
+<p>Configure and view up to 5 channels simultaneously (4 colors + 1 transmission).<br />
+See <a href="../multicolordisplay/">Multi-color display</a> for instructions.</p>
+<hr />
+<h3 id="4-selected-position">4. Selected Position</h3>
+<p>Filter displayed data by a tagged stage position during an experiment. Useful for reviewing specific positions.</p>
+<hr />
+<h3 id="5-scroll-bar">5. Scroll Bar</h3>
+<p>Acts as a <strong>time axis</strong> for scrolling through previously acquired data.</p>
+<div style="background-color: #f3e8ff; border-left: 5px solid #b366ff; border-radius: 10px; padding: 15px; margin: 10px 0;">
+<strong>📝 Note:</strong>  
+The displayed time index corresponds to the execution of **Detection** elements in the experiment tree, not raw TIFF frames. If multiple cameras or acquisitions are used in one Detection element, scrolling may advance multiple images at once.
+</div>
+
+<hr />
+<h3 id="6-reset-view">6. Reset View</h3>
+<p>Resets all zoom and translation transformations applied by the user.</p>
+<hr />
+<h3 id="7-toolbar">7. Toolbar</h3>
+<p>Contains image analysis tools and the multi-channel view toggle.<br />
+See <a href="../analysistools/">Live plotting and analysis tools</a> for a detailed guide.</p>
+<hr />
+<h2 id="experiment-editor">Experiment Editor</h2>
+<p>The <strong>Experiment Editor</strong> allows editing and configuring experimental workflows.</p>
+<p><img alt="Experiment editor" src="../images/experimenteditor.png" /></p>
+<h3 id="1-experiment-list">1. Experiment List</h3>
+<p>Shows all available experiments.<br />
+You can add, remove, save, or load experiments from a file.<br />
+The currently selected experiment executes when <strong>Start</strong> is pressed. By default, no experiments exist.</p>
+<hr />
+<h3 id="2-experiment-editor">2. Experiment Editor</h3>
+<p>Edit your workflow by adding or removing elements.<br />
+See <a href="../experimentsetup/">Setting up your experiment</a> for a detailed guide.</p>
+<hr />
+<h3 id="3-selected-element-settings">3. Selected Element Settings</h3>
+<p>Displays settings for the currently selected element.<br />
+More details about element types are available at <a href="../experimentsetup/">Setting up your experiment</a>.</p>
+<hr />
+<h2 id="next-steps">Next Steps</h2>
+<p>After familiarizing yourself with the GUI, proceed to:</p>
+<ul>
+<li><a href="../experimentsetup/">Setting up your experiment</a>  </li>
+<li><a href="../analysistools/">Live plotting and analysis tools</a>  </li>
+<li><a href="../smartimaging/">Setting up smart imaging pipelines</a>  </li>
+<li><a href="../fieldview/">Using the field viewer</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../hardwareconfig/" class="btn btn-neutral float-left" title="Hardware configuration and installation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../experimentsetup/" class="btn btn-neutral float-right" title="Setting up your experiment">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../hardwareconfig/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../experimentsetup/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

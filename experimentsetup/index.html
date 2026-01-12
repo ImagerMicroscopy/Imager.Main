@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Setting up your experiment - Imager</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Setting up your experiment";
+        var mkdocs_page_input_path = "experimentsetup.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Imager
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../hardwareconfig/">Hardware configuration and installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../guiguide/">GUI overview</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Setting up your experiment</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#starting-an-experiment-and-setting-storage-directories">Starting an Experiment and Setting Storage Directories</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#adding-and-re-arranging-elements">Adding and Re-arranging Elements</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#available-elements">Available Elements</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#detection">Detection</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#relative-stage-loop">Relative Stage Loop</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#stage-loop">Stage Loop</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#wait-for-time">Wait For Time</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#irradiation">Irradiation</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#do-times">Do Times</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#time-lapse">Time Lapse</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#update-acquisition">Update Acquisition</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#starting-your-experiment">Starting Your Experiment</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#next-steps">Next Steps</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../smartimaging/">Setting up smart imaging pipelines</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../smartprogramapi/">Smart program API</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../analysistools/">Live plotting and analysis tools</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../fieldview/">Viewing large areas</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../multicolordisplay/">Multi Channel view</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Imager</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Setting up your experiment</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="setting-up-experiments">Setting up Experiments</h1>
+<p>This section provides all resources you need to start and configure an experiment.</p>
+<hr />
+<h2 id="starting-an-experiment-and-setting-storage-directories">Starting an Experiment and Setting Storage Directories</h2>
+<p>To begin, add a new experiment by pressing <strong>Add</strong> on the <strong>Experiments</strong> tab.<br />
+You can create multiple experiments and select the one you want to run. Once selected, its contents appear in the <strong>Experiment Editor</strong>:</p>
+<p><img src="experimentadded.png" alt="Experiment added" width="150"/></p>
+<p>By default, the first element is called <strong>Root</strong>. This element contains the storage location and file name settings.<br />
+You can enable or disable storage (default is enabled) depending on whether you want to save your results.<br />
+<strong>Note:</strong> The Root element <strong>cannot be deleted</strong>.</p>
+<p><img src="rootelement.png" alt="Root element settings" width="250"/></p>
+<hr />
+<h2 id="adding-and-re-arranging-elements">Adding and Re-arranging Elements</h2>
+<p>The <strong>Experiment Editor</strong> contains all elements that will be executed.  </p>
+<ul>
+<li><strong>Add an element:</strong> Press <strong>Add element</strong>  </li>
+<li><strong>Delete an element:</strong> Select it and press <strong>Delete element</strong>  </li>
+<li><strong>Reorder elements:</strong> Drag them to a new position or inside other elements  </li>
+</ul>
+<p>Elements nested inside another element will execute within that context.  </p>
+<p><strong>Example 1:</strong> A <code>DoTimes</code> loop containing a <code>Detection</code> and a <code>Wait</code>:</p>
+<p><img src="DoTimesWithWait.png" alt="DoTimes with wait" width="250"/></p>
+<p>This will execute a loop where each iteration waits 1 second before performing the detection.  </p>
+<p><strong>Example 2:</strong> A more complex workflow:</p>
+<p><img src="complexworkflow.png" alt="Complex workflow" width="250"/></p>
+<p>This workflow performs a <strong>relative stage loop</strong> (tile scan). At each position:  </p>
+<ol>
+<li>Acquire a <strong>time-lapse</strong> of 100 images with ΔT = 0.01 s  </li>
+<li>Acquire a <strong>Z-stack</strong> at that position  </li>
+</ol>
+<p><strong>Important:</strong> Only certain elements can contain child elements:</p>
+<ul>
+<li>Do Times  </li>
+<li>Relative Stage Loop  </li>
+<li>Stage Loop  </li>
+<li>Time Lapse  </li>
+</ul>
+<div style="background-color: #ffe5e5; border-left: 5px solid #ff4d4d; border-radius: 10px; padding: 15px; margin: 10px 0;">
+<strong>⚠️ Important:</strong>  
+A loop element must contain at least one child element. Otherwise, the program will not start.
+</div>
+
+<hr />
+<h2 id="available-elements">Available Elements</h2>
+<h3 id="detection">Detection</h3>
+<p>The <strong>Detection</strong> element handles data acquisition.<br />
+It <strong>cannot have children</strong>.  </p>
+<p>When added, all user-defined acquisition settings are enabled by default.<br />
+You can toggle each setting on or off. All enabled settings are applied sequentially.</p>
+<div style="background-color: #f3e8ff; border-left: 5px solid #b366ff; border-radius: 10px; padding: 15px; margin: 10px 0;"> 
+<strong>📝 Note:</strong>  
+If multiple cameras are selected, data will be acquired for each camera separately.
+</div>
+
+<p><strong>Example:</strong> GFP and Cy5 acquisition settings active</p>
+<p><img src="detection.png" alt="Detection example" width="350"/></p>
+<hr />
+<h3 id="relative-stage-loop">Relative Stage Loop</h3>
+<p>A <strong>Relative Stage Loop</strong> defines a tile scan relative to the current position.<br />
+It generates a grid in XYZ, with adjustable number of tiles and step size.<br />
+The <strong>Return to original position</strong> option moves the stage back to the starting point after completion.</p>
+<p><img src="relstageloop.png" alt="Relative stage loop" width="350"/></p>
+<div style="background-color: #f3e8ff; border-left: 5px solid #b366ff; border-radius: 10px; padding: 15px; margin: 10px 0;"> 
+<strong>📝 Note:</strong>  
+Stage axis orientation matters. If axes are flipped, the visual representation may not match actual stage movement. Take care with large tile scans.
+</div>
+
+<hr />
+<h3 id="stage-loop">Stage Loop</h3>
+<p>Moves the stage to a set of predefined positions or specific XYZ coordinates.</p>
+<p><img src="stageloop.png" alt="Stage loop" width="350"/></p>
+<p><strong>Position List Actions:</strong></p>
+<ul>
+<li><strong>Add current position</strong> – Adds the stage’s current coordinates  </li>
+<li><strong>Set to current position</strong> – Overwrites the selected position with current coordinates  </li>
+<li><strong>Move up / Move down</strong> – Reorder positions in the list  </li>
+<li><strong>Delete selected</strong> – Remove a position  </li>
+<li><strong>Move stage to selected</strong> – Move the stage to the chosen position  </li>
+</ul>
+<p>Positions can also be loaded from templates. For example, a <strong>96-well plate</strong> (9 mm spacing):</p>
+<p><img src="96wellplate.png" alt="96-well plate positions" width="350"/></p>
+<p>Positions follow a <strong>chessboard naming pattern</strong>.</p>
+<hr />
+<h3 id="wait-for-time">Wait For Time</h3>
+<p>Pauses execution for a specified number of seconds.</p>
+<p><img src="Wait.png" alt="Wait element" width="350"/></p>
+<hr />
+<h3 id="irradiation">Irradiation</h3>
+<p>Irradiates a sample using a selected light source for a defined duration.<br />
+No data is acquired during irradiation.</p>
+<p><strong>Example:</strong> 20 seconds at 100% power on "ch1"</p>
+<p><img src="Irradiation.png" alt="Irradiation element" width="350"/></p>
+<hr />
+<h3 id="do-times">Do Times</h3>
+<p>A <strong>Do Times</strong> element acts as a for-loop.<br />
+It repeats all child elements <strong>N times</strong>.</p>
+<p><img src="dotimes.png" alt="DoTimes element" width="350"/></p>
+<div style="background-color: #f3e8ff; border-left: 5px solid #b366ff; border-radius: 10px; padding: 15px; margin: 10px 0;">
+<strong>📝 Note:</strong>  
+
+**Special case – Fast Acquisition Loop:**
+
+<img src="fastacquisitionloop.png" alt="Fast acquisition loop" width="350"/>
+
+DoTimes loops containing only **Detection** elements are converted internally into a **fast acquisition loop**.  
+
+This communicates with the camera once to acquire all frames asynchronously, avoiding delays from repeated back-and-forth commands.  
+
+⚠️ Adding other elements inside the loop disables this optimization.
+</div>
+
+<hr />
+<h3 id="time-lapse">Time Lapse</h3>
+<p>Repeats all child elements with a predefined interval between repetitions.</p>
+<p><img src="timelapse.png" alt="Time lapse element" width="350"/></p>
+<hr />
+<h3 id="update-acquisition">Update Acquisition</h3>
+<p>This element is used <strong>only with smart microscopy workflows</strong>.<br />
+See <a href="../smartimaging/">Setting up smart imaging pipelines</a> for details.</p>
+<hr />
+<h2 id="starting-your-experiment">Starting Your Experiment</h2>
+<p>Once the experiment tree is configured:</p>
+<ul>
+<li>Press <strong>Start</strong> at the top to begin execution  </li>
+<li>Use the scrollbar to navigate through the experiment (disable <strong>Show last</strong> or change pinned position as needed)  </li>
+<li>Press <strong>Stop</strong> to end the experiment  </li>
+</ul>
+<hr />
+<h2 id="next-steps">Next Steps</h2>
+<ul>
+<li><a href="../smartimaging/">Setting up smart imaging pipelines</a></li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../guiguide/" class="btn btn-neutral float-left" title="GUI overview"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../smartimaging/" class="btn btn-neutral float-right" title="Setting up smart imaging pipelines">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../guiguide/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../smartimaging/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

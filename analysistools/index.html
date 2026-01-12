@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Live plotting and analysis tools - Imager</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Live plotting and analysis tools";
+        var mkdocs_page_input_path = "analysistools.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/yaml.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/rust.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Imager
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../quickstart/">Quick start</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../hardwareconfig/">Hardware configuration and installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../guiguide/">GUI overview</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../experimentsetup/">Setting up your experiment</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../smartimaging/">Setting up smart imaging pipelines</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../smartprogramapi/">Smart program API</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Live plotting and analysis tools</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#available-tools">Available Tools</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#using-the-area-tool">Using the Area Tool</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#using-the-line-tool">Using the Line Tool</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#plotting-data">Plotting Data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#viewing-plots">Viewing Plots</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../fieldview/">Viewing large areas</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../multicolordisplay/">Multi Channel view</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Imager</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Live plotting and analysis tools</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="live-plotting-and-analysis-tools">Live Plotting and Analysis Tools</h1>
+<p>A small set of live plotting and analysis tools is available during data acquisition.<br />
+These tools are pinned to the toolbar on the <strong>left side of the main image display</strong>.</p>
+<p><img alt="Toolbar" src="../images/toolbar.png" /></p>
+<h2 id="available-tools">Available Tools</h2>
+<div>
+<img src="dot.png" alt="Circular area selection icon" width="50"/>
+<strong> Circular Area Selection</strong><br>
+Measures the <strong>mean</strong>, <strong>maximum</strong>, and <strong>minimum</strong> intensity within a selected circular region of the image.
+<br>
+Use <strong>Ctrl + +</strong> to increase the circle size and <strong>Ctrl + -</strong> to decrease it.
+</div>
+
+<p><br></p>
+<div>
+<img src="linetool.png" alt="Line profile icon" width="50"/>
+<strong> Line Profile</strong><br>
+Plots the intensity profile along a line drawn across the image.
+<br>
+Use <strong>Ctrl + +</strong> to increase the line thickness and <strong>Ctrl + -</strong> to reduce it.
+</div>
+
+<hr />
+<h2 id="using-the-area-tool">Using the Area Tool</h2>
+<ol>
+<li><strong>Select an image</strong><br />
+   Double-tap the image you want to analyze.<br />
+   A faint aquamarine border will appear, indicating that the image is active.</li>
+</ol>
+<p><img src="border.png" alt="Selected image border" width="50"/></p>
+<ol>
+<li><strong>Activate the area tool</strong><br />
+   Click the <strong>Circular Area Selection</strong> button.<br />
+   A red indicator dot will appear in the top-left corner of the image.</li>
+</ol>
+<p><img src="dotstart.png" alt="Area tool activated" width="50"/></p>
+<ol>
+<li><strong>Place circular regions</strong><br />
+   Move the cursor over the image and adjust the region size using<br />
+   <strong>Ctrl + +</strong> or <strong>Ctrl + -</strong>.<br />
+   Click once to place a circular region.<br />
+   Multiple regions can be added before confirming.</li>
+</ol>
+<p><img src="multiregions.png" alt="Multiple circular regions" width="150"/></p>
+<ol>
+<li><strong>Confirm the selection</strong><br />
+   Press <strong>Enter</strong> to finalize the selection.</li>
+</ol>
+<hr />
+<h2 id="using-the-line-tool">Using the Line Tool</h2>
+<ol>
+<li>
+<p><strong>Select an image</strong><br />
+   Double-tap the image to activate it.<br />
+   A faint aquamarine border will appear.</p>
+</li>
+<li>
+<p><strong>Draw the line</strong><br />
+   Move the cursor to the desired starting position and click once.<br />
+   Move the cursor to the end position and click again to complete the line.</p>
+</li>
+</ol>
+<p><img src="linedrawn.png" alt="Line drawn on image" width="150"/></p>
+<ol>
+<li><strong>Confirm the selection</strong><br />
+   Additional lines may be added if required.<br />
+   Press <strong>Enter</strong> to finalize the selection.</li>
+</ol>
+<hr />
+<h2 id="plotting-data">Plotting Data</h2>
+<p>After confirming a selection, a new <strong>collection ID</strong> appears in the<br />
+<strong>Image Elements</strong> tab.</p>
+<p><img src="elementcollection.png" alt="Element collection list" width="350"/></p>
+<p>Each collection represents a group of selected elements.<br />
+The following actions are available:</p>
+<ul>
+<li>
+<p><strong>Plot</strong><br>
+  Generates plots for all elements across all collections.</p>
+</li>
+<li>
+<p><strong>Hide / Show all</strong><br>
+  Toggles the visibility of all analysis overlays on the images.</p>
+</li>
+<li>
+<p><strong>Delete</strong><br>
+  Removes the selected collection.</p>
+</li>
+</ul>
+<div style="background-color: #f3e8ff; border-left: 5px solid #b366ff; border-radius: 10px; padding: 15px; margin: 10px 0;">
+<strong>📝 Note:</strong><br>
+Plots are generated separately for each <strong>Acquisition / Detector</strong> pair.
+</div>
+
+<hr />
+<h2 id="viewing-plots">Viewing Plots</h2>
+<p>Pressing <strong>Plot</strong> opens a new window displaying the generated plots.</p>
+<p><img src="plots.png" alt="Plots window" width="350"/></p>
+<p>Plot windows can be closed at any time.<br />
+To display them again, simply press <strong>Plot</strong>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../smartprogramapi/" class="btn btn-neutral float-left" title="Smart program API"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../fieldview/" class="btn btn-neutral float-right" title="Viewing large areas">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../smartprogramapi/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../fieldview/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
