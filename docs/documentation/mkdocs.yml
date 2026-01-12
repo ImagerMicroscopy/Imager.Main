@@ -1,0 +1,20 @@
+site_name: Imager
+theme:
+  name: readthedocs
+  highlightjs: true
+  hljs_languages:
+    - yaml
+    - rust
+
+nav:
+  - Home: index.md
+  - Installation: Installation.md
+  - Quick start: quickstart.md
+  - Hardware configuration and installation: hardwareconfig.md
+  - GUI overview: guiguide.md
+  - Setting up your experiment: experimentsetup.md
+  - Setting up smart imaging pipelines: smartimaging.md
+  - Smart program API: smartprogramapi.md
+  - Live plotting and analysis tools: analysistools.md
+  - Viewing large areas: fieldview.md
+  - Multi Channel view: multicolordisplay.md
