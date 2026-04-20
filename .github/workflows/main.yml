@@ -60,7 +60,6 @@ jobs:
              New-Item -ItemType Directory -Force -Path build\Plugins
              Copy-Item "$installRoot\bin\*" build -Recurse
              Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
-             New-Item -ItemType Directory -Force -Path "..\Release\PluginConfigurations"
             
    
     - name: Clone TiffLib
@@ -155,6 +154,7 @@ jobs:
     - name: Copy to Release Folder
       run: |
         New-Item -ItemType Directory -Force -Path "Release\python"
+        New-Item -ItemType Directory -Force -Path "Release\PluginConfigurations"
         Copy-Item -Path ".\temp_python\*" -Destination "Release\python" -Recurse -Force
           
     - name: Zip release
