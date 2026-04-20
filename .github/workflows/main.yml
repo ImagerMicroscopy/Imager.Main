@@ -58,11 +58,9 @@ jobs:
              $installRoot = stack path --local-install-root
              New-Item -ItemType Directory -Force -Path build
              New-Item -ItemType Directory -Force -Path build\Plugins
-             New-Item -ItemType Directory -Force -Path build\PluginConfigurations
              Copy-Item "$installRoot\bin\*" build -Recurse
              Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
              New-Item -ItemType Directory -Force -Path "..\Release\PluginConfigurations"
-             Copy-Item "PluginConfigurations\*" -Destination "..\Release\PluginConfigurations" -Recurse -Force
             
    
     - name: Clone TiffLib
