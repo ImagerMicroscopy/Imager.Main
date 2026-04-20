@@ -61,6 +61,8 @@ jobs:
              New-Item -ItemType Directory -Force -Path build\PluginConfigurations
              Copy-Item "$installRoot\bin\*" build -Recurse
              Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
+             New-Item -ItemType Directory -Force -Path "..\Release\PluginConfigurations"
+             Copy-Item "PluginConfigurations\*" -Destination "..\Release\PluginConfigurations" -Recurse -Force
             
    
     - name: Clone TiffLib
