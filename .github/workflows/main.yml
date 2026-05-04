@@ -45,22 +45,22 @@ jobs:
          path: ${{ env.CORE_PATH }}
 
 
-    - name: Build Core
-      uses: haskell-actions/setup@v2
-      with:
-          ghc-version: '8.8.4' # Exact version of ghc to use
-          enable-stack: true
-          stack-version: 'latest'
+    # - name: Build Core
+    #   uses: haskell-actions/setup@v2
+    #   with:
+    #       ghc-version: '8.8.4' # Exact version of ghc to use
+    #       enable-stack: true
+    #       stack-version: 'latest'
 
-    - run: |
-             cd $env:CORE_PATH
-             stack build . 
-             $installRoot = stack path --local-install-root
-             New-Item -ItemType Directory -Force -Path build
-             New-Item -ItemType Directory -Force -Path build\Plugins
-             Copy-Item "$installRoot\bin\*" build -Recurse
-             Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
-             Copy-Item "equipment.txt" -Destination "..\Release" 
+    # - run: |
+    #          cd $env:CORE_PATH
+    #          stack build . 
+    #          $installRoot = stack path --local-install-root
+    #          New-Item -ItemType Directory -Force -Path build
+    #          New-Item -ItemType Directory -Force -Path build\Plugins
+    #          Copy-Item "$installRoot\bin\*" build -Recurse
+    #          Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
+    #          Copy-Item "equipment.txt" -Destination "..\Release" 
            
    
     - name: Clone TiffLib
@@ -108,7 +108,8 @@ jobs:
       run: |
          meson setup builddir
          meson compile -C builddir
-         Copy-Item "builddir\SCCamera.imagerplugin" -Destination "..\..\Release\Plugins"
+         New-Item -ItemType Directory -Force -Path ..\Release\Plugins
+         Copy-Item "builddir\SCCamera.imagerplugin" -Destination "..\Release\Plugins"
 
 
     - name: Clone Smart Program Server
