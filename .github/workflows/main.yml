@@ -106,7 +106,6 @@ jobs:
     - name: Run Camera Build
       working-directory: ${{ env.CAMERA_PATH }}
       run: |
-         cd src
          meson setup builddir
          meson compile -C builddir
          Copy-Item "builddir\SCCamera.imagerplugin" -Destination "..\..\Release\Plugins"
