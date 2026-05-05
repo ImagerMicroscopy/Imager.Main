@@ -20,6 +20,7 @@ jobs:
       GUI_PATH: gui
       CORE_PATH: core
       CAMERA_PATH: camera
+      PLUGIN_PATH: plugins
       TIFFLIB_PATH: tifflib
       SMART_PATH: smart
       PYTHON_VER: "3.13.1"
@@ -34,8 +35,76 @@ jobs:
 
     - name: Publish GUI
       run:  |
+        New-Item -ItemType Directory -Force -Path "..\Release"
         $guiPath = Join-Path $env:GUI_PATH $env:PROJECT_PATH
         dotnet publish $guipath -r win-x64 -c Release --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -p:IsTestProject=false -p:EnableCodeCoverage=false -o Release
+    
+    - name: Install Python Dependencies
+      run: pip install meson ninja
+      
+    - name: Prepare MSVC
+      uses: bus1/cabuild/action/msdevshell@v1
+      with:
+         architecture: x64
+
+    - name: Clone Imager Plugins
+      uses: actions/checkout@v4
+      with: 
+         lfs: true
+         repository: ImagerMicroscopy/Imager.Plugins
+         path: ${{ env.PLUGIN_PATH }}
+         
+    - name: Build Dummy Camera
+      working-directory: ${{ env.PLUGIN_PATH }}
+      run: | 
+        cd DummyCamera
+        meson setup builddir 
+        meson compile -C builddir
+        New-Item -ItemType Directory -Force -Path ..\Release\Plugins
+        Copy-Item "builddir\DummyCamera.imagerplugin" -Destination "..\Release\Plugins"
+        
+    - name: Build Dummy Equipment
+      working-directory: ${{ env.PLUGIN_PATH }}
+      run: | 
+        cd DummyEquipment
+        meson setup builddir 
+        meson compile -C builddir
+        New-Item -ItemType Directory -Force -Path ..\Release\Plugins
+        Copy-Item "builddir\DummyEquipment.imagerplugin" -Destination "..\Release\Plugins"
+
+
+     - name: Clone TiffLib
+      uses: actions/checkout@v4
+      with: 
+         repository: ImagerMicroscopy/Imager.TiffLib
+         ssh-key: ${{ secrets.TIFFLIB_CLONE }}
+         path: ${{ env.TIFFLIB_PATH }}
+
+
+    - name: Run TiffLib Build
+      working-directory: ${{ env.TIFFLIB_PATH }}
+      run: |
+         meson setup builddir
+         meson compile -C builddir
+         Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
+         Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
+
+
+    - name: Clone SCCamera
+      uses: actions/checkout@v4
+      with: 
+         lfs: true
+         repository: ImagerMicroscopy/Imager.Cameras
+         ssh-key: ${{ secrets.CAMERA_CLONE }}
+         path: ${{ env.CAMERA_PATH }}
+
+    - name: Run Camera Build
+      working-directory: ${{ env.CAMERA_PATH }}
+      run: |
+         meson setup builddir
+         meson compile -C builddir
+         New-Item -ItemType Directory -Force -Path ..\Release\Plugins
+         Copy-Item "builddir\SCCamera.imagerplugin" -Destination "..\Release\Plugins"
   
     - name: Clone Core
       uses: actions/checkout@v4
@@ -63,53 +132,10 @@ jobs:
              Copy-Item "equipment.txt" -Destination "..\Release" 
            
    
-    - name: Clone TiffLib
-      uses: actions/checkout@v4
-      with: 
-         repository: ImagerMicroscopy/Imager.TiffLib
-         ssh-key: ${{ secrets.TIFFLIB_CLONE }}
-         path: ${{ env.TIFFLIB_PATH }}
 
-    - name: Clone SCCamera
-      uses: actions/checkout@v4
-      with: 
-         lfs: true
-         repository: ImagerMicroscopy/Imager.Cameras
-         ssh-key: ${{ secrets.CAMERA_CLONE }}
-         path: ${{ env.CAMERA_PATH }}
-        
-    - name: Setup Python
-      uses: actions/setup-python@v4
-      with:
-         python-version: '3.x'
-         
-    - name: Install Python Dependencies
-      run: pip install meson ninja
-    - name: Prepare MSVC
-      uses: bus1/cabuild/action/msdevshell@v1
-      with:
-         architecture: x64
-         
-    - name: Prepare Build
-      working-directory: ${{ env.TIFFLIB_PATH }}
-      run: |       
-         meson setup builddir
 
-    - name: Run TiffLib Build
-      working-directory: ${{ env.TIFFLIB_PATH }}
-      run: |
-         meson compile -C builddir
-         New-Item -ItemType Directory -Force -Path "..\Release"
-         Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
-         Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
 
-    - name: Run Camera Build
-      working-directory: ${{ env.CAMERA_PATH }}
-      run: |
-         meson setup builddir
-         meson compile -C builddir
-         New-Item -ItemType Directory -Force -Path ..\Release\Plugins
-         Copy-Item "builddir\SCCamera.imagerplugin" -Destination "..\Release\Plugins"
+
 
 
     - name: Clone Smart Program Server
