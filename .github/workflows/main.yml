@@ -56,25 +56,27 @@ jobs:
          
     - name: Build Dummy Camera
       working-directory: ${{ env.PLUGIN_PATH }}
-      run: | 
-        meson setup DummyCamera/builddir
+      shell: powershell
+      run: |
+        meson setup DummyCamera/builddir DummyCamera
         meson compile -C DummyCamera/builddir
     
         $releasePlugins = Join-Path $env:GITHUB_WORKSPACE "Release\Plugins"
         New-Item -ItemType Directory -Force -Path $releasePlugins
     
-        Copy-Item "DummyCamera\builddir\DummyCamera.imagerplugin" -Destination $releasePlugins
+        Copy-Item "DummyCamera/builddir/DummyCamera.imagerplugin" -Destination $releasePlugins
             
     - name: Build Dummy Equipment
       working-directory: ${{ env.PLUGIN_PATH }}
-      run: | 
-        meson setup DummyEquipment/builddir
+      shell: powershell
+      run: |
+        meson setup DummyEquipment/builddir DummyEquipment
         meson compile -C DummyEquipment/builddir
     
         $releasePlugins = Join-Path $env:GITHUB_WORKSPACE "Release\Plugins"
         New-Item -ItemType Directory -Force -Path $releasePlugins
     
-        Copy-Item "DummyEquipment\builddir\DummyEquipment.imagerplugin" -Destination $releasePlugins
+        Copy-Item "DummyEquipment/builddir/DummyEquipment.imagerplugin" -Destination $releasePlugins
 
 
     - name: Clone TiffLib
