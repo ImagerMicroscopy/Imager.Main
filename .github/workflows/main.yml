@@ -73,7 +73,7 @@ jobs:
         Copy-Item "builddir\DummyEquipment.imagerplugin" -Destination "..\Release\Plugins"
 
 
-     - name: Clone TiffLib
+    - name: Clone TiffLib
       uses: actions/checkout@v4
       with: 
          repository: ImagerMicroscopy/Imager.TiffLib
