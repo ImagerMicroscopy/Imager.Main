@@ -36,6 +36,7 @@ jobs:
     - name: Publish GUI
       run:  |
         New-Item -ItemType Directory -Force -Path "..\Release"
+        New-Item -ItemType Directory -Force -Path "..\Release\hardwareplugins"
         $guiPath = Join-Path $env:GUI_PATH $env:PROJECT_PATH
         dotnet publish $guipath -r win-x64 -c Release --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -p:IsTestProject=false -p:EnableCodeCoverage=false -o Release
     
@@ -65,8 +66,9 @@ jobs:
         New-Item -ItemType Directory -Force -Path $releasePlugins
         Copy-Item "builddir/DummyCamera/DummyCamera.imagerplugin" -Destination $releasePlugins
         Copy-Item "builddir/DummyEquipment/DummyEquipment.imagerplugin" -Destination $releasePlugins
-
-
+        $dest = Join-Path $env:GITHUB_WORKSPACE "Release\hardwareplugins"
+        New-Item -ItemType Directory -Force -Path $dest
+        Copy-Item "builddir\*" -Destination $dest -Recurse
 
     - name: Clone TiffLib
       uses: actions/checkout@v4
@@ -188,25 +190,25 @@ jobs:
         name: Imager-Release-winx64
         path: Imager-Release-winx64.zip
 
-  # publish-release:
-  #   needs: build
-  #   if: startsWith(github.ref, 'refs/tags/v') 
-  #   runs-on: ubuntu-latest
-  #   permissions:
-  #     contents: write 
-  #   steps:
-  #     - name: Download Build Artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: Imager-Release-winx64
-  #         path: ./downloaded-artifacts
+  publish-release:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') 
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+    steps:
+      - name: Download Build Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: Imager-Release-winx64
+          path: ./downloaded-artifacts
 
-  #     - name: Create GitHub Release
-  #       uses: softprops/action-gh-release@v2
-  #       with:
-  #         name: Imager ${{ github.ref_name }}
-  #         tag_name: ${{ github.ref }}
-  #         files: ./downloaded-artifacts/Imager-Release-winx64.zip
-  #         draft: false
-  #         prerelease: false
-  #         generate_release_notes: false 
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Imager ${{ github.ref_name }}
+          tag_name: ${{ github.ref }}
+          files: ./downloaded-artifacts/Imager-Release-winx64.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: false 
