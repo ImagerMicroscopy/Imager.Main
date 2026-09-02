@@ -58,6 +58,7 @@ jobs:
       working-directory: ${{ env.PLUGIN_PATH }}
       shell: powershell
       run: |
+        meson subprojects download
         meson setup builddir --buildtype=release
         meson compile -C builddir
         $releasePlugins = Join-Path $env:GITHUB_WORKSPACE "Release\Plugins"
