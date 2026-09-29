@@ -3,7 +3,7 @@ on:
   push:
     branches: [ "main" ]
     tags:
-      - 'v*' 
+      - 'v*'
   pull_request:
     branches: [ "main" ]
 
@@ -17,6 +17,7 @@ jobs:
 
     env:
       PROJECT_PATH:   ImagerAvalonia.Desktop
+      TEST_PROJECT_PATH: ImagerAvalonia.Tests
       GUI_PATH: gui
       CORE_PATH: core
       CAMERA_PATH: camera
@@ -32,6 +33,10 @@ jobs:
         ssh-key: ${{ secrets.GUI_CLONE }}
         path: ${{ env.GUI_PATH }}
 
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 10.0.x
 
     - name: Publish GUI
       run:  |
@@ -39,10 +44,10 @@ jobs:
         New-Item -ItemType Directory -Force -Path "..\Release\hardwareplugins"
         $guiPath = Join-Path $env:GUI_PATH $env:PROJECT_PATH
         dotnet publish $guipath -r win-x64 -c Release --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -p:IsTestProject=false -p:EnableCodeCoverage=false -o Release
-    
+
     - name: Install Python Dependencies
       run: pip install meson ninja
-      
+
     - name: Prepare MSVC
       uses: bus1/cabuild/action/msdevshell@v1
       with:
@@ -50,7 +55,7 @@ jobs:
 
     - name: Clone Imager Plugins
       uses: actions/checkout@v4
-      with: 
+      with:
          lfs: true
          repository: ImagerMicroscopy/Imager.Plugins
          path: ${{ env.PLUGIN_PATH }}
@@ -72,7 +77,7 @@ jobs:
 
     - name: Clone TiffLib
       uses: actions/checkout@v4
-      with: 
+      with:
          repository: ImagerMicroscopy/Imager.TiffLib
          ssh-key: ${{ secrets.TIFFLIB_CLONE }}
          path: ${{ env.TIFFLIB_PATH }}
@@ -86,10 +91,51 @@ jobs:
          Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
          Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
 
+    # Runs every GUI test. IMAGER_MIS_LIBRARY switches on the integration tests that
+    # write and read real storage files through the TiffLib DLL built in the step above
+    # (without it those tests are skipped). A failing test fails the job, so nothing
+    # below (zip, release) runs on a broken build.
+    - name: Run tests
+      shell: pwsh
+      env:
+        IMAGER_MIS_LIBRARY: ${{ github.workspace }}\${{ env.TIFFLIB_PATH }}\builddir\MeasurementImageStorageDLL.dll
+      run: |
+        if (-not (Test-Path $env:IMAGER_MIS_LIBRARY)) {
+          throw "TiffLib DLL not found at $env:IMAGER_MIS_LIBRARY - storage tests would be skipped."
+        }
+        $testProject = Join-Path $env:GUI_PATH $env:TEST_PROJECT_PATH
+        dotnet test $testProject -c Release `
+          --logger "trx;LogFileName=results.trx" `
+          --logger "console;verbosity=normal" `
+          --collect:"XPlat Code Coverage" `
+          --results-directory TestResults
+
+    - name: Coverage summary
+      if: always()
+      uses: danielpalme/ReportGenerator-GitHub-Action@5
+      with:
+        reports: TestResults/**/coverage.cobertura.xml
+        targetdir: TestResults/coverage-report
+        reporttypes: MarkdownSummaryGithub;HtmlInline
+
+    - name: Publish coverage to job summary
+      if: always()
+      shell: pwsh
+      run: |
+        $summary = "TestResults/coverage-report/SummaryGithub.md"
+        if (Test-Path $summary) { Get-Content $summary >> $env:GITHUB_STEP_SUMMARY }
+
+    - name: Upload test results and coverage
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: TestResults
+
 
     - name: Clone SCCamera
       uses: actions/checkout@v4
-      with: 
+      with:
          lfs: true
          repository: ImagerMicroscopy/Imager.Cameras
          ssh-key: ${{ secrets.CAMERA_CLONE }}
@@ -102,7 +148,7 @@ jobs:
          meson compile -C builddir
          New-Item -ItemType Directory -Force -Path ..\Release\Plugins
          Copy-Item "builddir\SCCamera.imagerplugin" -Destination "..\Release\Plugins"
-  
+
     - name: Clone Core
       uses: actions/checkout@v4
       with:
@@ -120,15 +166,15 @@ jobs:
 
     - run: |
              cd $env:CORE_PATH
-             stack build . 
+             stack build .
              $installRoot = stack path --local-install-root
              New-Item -ItemType Directory -Force -Path build
              New-Item -ItemType Directory -Force -Path build\Plugins
              Copy-Item "$installRoot\bin\*" build -Recurse
              Copy-Item "build\*" -Destination "..\Release" -Recurse -Force
-             Copy-Item "equipment.txt" -Destination "..\Release" 
-           
-   
+             Copy-Item "equipment.txt" -Destination "..\Release"
+
+
 
 
 
@@ -137,11 +183,11 @@ jobs:
 
     - name: Clone Smart Program Server
       uses: actions/checkout@v4
-      with: 
+      with:
          repository: ImagerMicroscopy/Imager.Smart
          ssh-key: ${{ secrets.SMART_CLONE }}
          path: ${{ env.SMART_PATH }}
-         
+
     - name: Copy Smart server files
       run: |
         New-Item -ItemType Directory -Force -Path "Release\SmartProgramPython"
@@ -152,7 +198,7 @@ jobs:
         $url = "https://www.python.org/ftp/python/${{ env.PYTHON_VER }}/python-${{ env.PYTHON_VER }}-embed-amd64.zip"
         Invoke-WebRequest -Uri $url -OutFile python.zip
         Expand-Archive -Path python.zip -DestinationPath ./temp_python
-  
+
     - name: Enable Site-Packages
       run: |
         $pthFile = Get-ChildItem -Path ./temp_python -Filter "*._pth" | Select-Object -First 1
@@ -161,29 +207,29 @@ jobs:
             $content = $content -replace "#import site", "import site"
             Set-Content -Path $pthFile.FullName -Value $content
         }
-  
+
     - name: Install Pip and Requirements
       shell: powershell
       run: |
         $reqPath = Join-Path $env:SMART_PATH "requirements.txt"
         Invoke-WebRequest -Uri "https://bootstrap.pypa.io/get-pip.py" -OutFile get-pip.py
-        
+
         ./temp_python/python.exe get-pip.py --no-warn-script-location
         ./temp_python/python.exe -m pip install setuptools wheel --no-warn-script-location
         if (Test-Path $reqPath) {
-            ./temp_python/python.exe -m pip install -r $reqPath --no-warn-script-location --only-binary=:all:        
+            ./temp_python/python.exe -m pip install -r $reqPath --no-warn-script-location --only-binary=:all:
         }
         Remove-Item get-pip.py
-  
+
     - name: Copy to Release Folder
       run: |
         New-Item -ItemType Directory -Force -Path "Release\python"
         New-Item -ItemType Directory -Force -Path "Release\PluginConfigurations"
         Copy-Item -Path ".\temp_python\*" -Destination "Release\python" -Recurse -Force
-          
+
     - name: Zip release
       run: 7z a Imager-Release-winx64.zip .\Release\*
-  
+
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
       with:
@@ -192,10 +238,10 @@ jobs:
 
   publish-release:
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v') 
+    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
-      contents: write 
+      contents: write
     steps:
       - name: Download Build Artifacts
         uses: actions/download-artifact@v4
@@ -211,4 +257,4 @@ jobs:
           files: ./downloaded-artifacts/Imager-Release-winx64.zip
           draft: false
           prerelease: false
-          generate_release_notes: false 
+          generate_release_notes: false
