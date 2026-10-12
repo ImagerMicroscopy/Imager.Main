@@ -84,12 +84,17 @@ jobs:
 
 
     - name: Run TiffLib Build
+      shell: pwsh
       working-directory: ${{ env.TIFFLIB_PATH }}
       run: |
-         meson setup builddir
-         meson compile -C builddir
-         Copy-Item "builddir\MeasurementImageStorageDLL.dll" -Destination "..\Release"
-         Copy-Item "builddir\MeasurementImageStorageDLL.lib" -Destination "..\Release"
+        meson setup builddir
+        if ($LASTEXITCODE -ne 0) { throw "Meson setup failed" }
+
+        meson compile -C builddir
+        if ($LASTEXITCODE -ne 0) { throw "TiffLib compilation failed" }
+
+        Copy-Item "builddir\MeasurementImageStorage.dll" -Destination "..\Release"
+        Copy-Item "builddir\MeasurementImageStorage.lib" -Destination "..\Release"
 
     # Runs every GUI test. IMAGER_MIS_LIBRARY switches on the integration tests that
     # write and read real storage files through the TiffLib DLL built in the step above
@@ -98,7 +103,7 @@ jobs:
     - name: Run tests
       shell: pwsh
       env:
-        IMAGER_MIS_LIBRARY: ${{ github.workspace }}\${{ env.TIFFLIB_PATH }}\builddir\MeasurementImageStorageDLL.dll
+        IMAGER_MIS_LIBRARY: ${{ github.workspace }}\${{ env.TIFFLIB_PATH }}\builddir\MeasurementImageStorage.dll
       run: |
         if (-not (Test-Path $env:IMAGER_MIS_LIBRARY)) {
           throw "TiffLib DLL not found at $env:IMAGER_MIS_LIBRARY - storage tests would be skipped."
