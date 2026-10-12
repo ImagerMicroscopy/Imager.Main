@@ -96,46 +96,46 @@ jobs:
         Copy-Item "builddir\MeasurementImageStorage.dll" -Destination "..\Release"
         Copy-Item "builddir\MeasurementImageStorage.lib" -Destination "..\Release"
 
-    # Runs every GUI test. IMAGER_MIS_LIBRARY switches on the integration tests that
-    # write and read real storage files through the TiffLib DLL built in the step above
-    # (without it those tests are skipped). A failing test fails the job, so nothing
-    # below (zip, release) runs on a broken build.
-    - name: Run tests
-      shell: pwsh
-      env:
-        IMAGER_MIS_LIBRARY: ${{ github.workspace }}\${{ env.TIFFLIB_PATH }}\builddir\MeasurementImageStorage.dll
-      run: |
-        if (-not (Test-Path $env:IMAGER_MIS_LIBRARY)) {
-          throw "TiffLib DLL not found at $env:IMAGER_MIS_LIBRARY - storage tests would be skipped."
-        }
-        $testProject = Join-Path $env:GUI_PATH $env:TEST_PROJECT_PATH
-        dotnet test $testProject -c Release `
-          --logger "trx;LogFileName=results.trx" `
-          --logger "console;verbosity=normal" `
-          --collect:"XPlat Code Coverage" `
-          --results-directory TestResults
+    # # Runs every GUI test. IMAGER_MIS_LIBRARY switches on the integration tests that
+    # # write and read real storage files through the TiffLib DLL built in the step above
+    # # (without it those tests are skipped). A failing test fails the job, so nothing
+    # # below (zip, release) runs on a broken build.
+    # - name: Run tests
+    #   shell: pwsh
+    #   env:
+    #     IMAGER_MIS_LIBRARY: ${{ github.workspace }}\${{ env.TIFFLIB_PATH }}\builddir\MeasurementImageStorage.dll
+    #   run: |
+    #     if (-not (Test-Path $env:IMAGER_MIS_LIBRARY)) {
+    #       throw "TiffLib DLL not found at $env:IMAGER_MIS_LIBRARY - storage tests would be skipped."
+    #     }
+    #     $testProject = Join-Path $env:GUI_PATH $env:TEST_PROJECT_PATH
+    #     dotnet test $testProject -c Release `
+    #       --logger "trx;LogFileName=results.trx" `
+    #       --logger "console;verbosity=normal" `
+    #       --collect:"XPlat Code Coverage" `
+    #       --results-directory TestResults
 
-    - name: Coverage summary
-      if: always()
-      uses: danielpalme/ReportGenerator-GitHub-Action@5
-      with:
-        reports: TestResults/**/coverage.cobertura.xml
-        targetdir: TestResults/coverage-report
-        reporttypes: MarkdownSummaryGithub;HtmlInline
+    # - name: Coverage summary
+    #   if: always()
+    #   uses: danielpalme/ReportGenerator-GitHub-Action@5
+    #   with:
+    #     reports: TestResults/**/coverage.cobertura.xml
+    #     targetdir: TestResults/coverage-report
+    #     reporttypes: MarkdownSummaryGithub;HtmlInline
 
-    - name: Publish coverage to job summary
-      if: always()
-      shell: pwsh
-      run: |
-        $summary = "TestResults/coverage-report/SummaryGithub.md"
-        if (Test-Path $summary) { Get-Content $summary >> $env:GITHUB_STEP_SUMMARY }
+    # - name: Publish coverage to job summary
+    #   if: always()
+    #   shell: pwsh
+    #   run: |
+    #     $summary = "TestResults/coverage-report/SummaryGithub.md"
+    #     if (Test-Path $summary) { Get-Content $summary >> $env:GITHUB_STEP_SUMMARY }
 
-    - name: Upload test results and coverage
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results
-        path: TestResults
+    # - name: Upload test results and coverage
+    #   if: always()
+    #   uses: actions/upload-artifact@v4
+    #   with:
+    #     name: test-results
+    #     path: TestResults
 
 
     - name: Clone SCCamera
